@@ -11,16 +11,6 @@ export interface Flohmarkt {
   termine: Termin[];
 }
 
-export interface SpecialTermin extends Termin {
-  ort: string;
-  thema: string;
-}
-
-export interface FlohmaerkteData {
-  regular: Flohmarkt[];
-  special: SpecialTermin[];
-}
-
 export interface NextTerminInfo {
   datum: string;
   wochentag: string;

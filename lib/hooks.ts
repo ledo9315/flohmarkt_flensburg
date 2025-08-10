@@ -1,15 +1,12 @@
 import { useMemo } from "react";
 import { getNextOverallTermin, getNextTermin } from "./utils";
-import type { FlohmaerkteData, Flohmarkt } from "./types";
+import type { Flohmarkt } from "./types";
 
 /**
  * Hook für den nächsten Gesamttermin
  */
-export function useNextOverallTermin(flohmaerkte: FlohmaerkteData) {
-  return useMemo(
-    () => getNextOverallTermin(flohmaerkte.regular, flohmaerkte.special),
-    [flohmaerkte.regular, flohmaerkte.special]
-  );
+export function useNextOverallTermin(flohmaerkte: Flohmarkt[]) {
+  return useMemo(() => getNextOverallTermin(flohmaerkte), [flohmaerkte]);
 }
 
 /**

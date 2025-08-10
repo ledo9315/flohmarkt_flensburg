@@ -21,10 +21,9 @@ export default function FlohmarktFlensburg() {
             "@type": "ItemList",
             name: "Flohmärkte in Flensburg 2025",
             description: "Alle Flohmarkt-Termine in Flensburg für 2025",
-            numberOfItems:
-              flohmaerkte.regular.length + flohmaerkte.special.length,
+            numberOfItems: flohmaerkte.length,
             itemListElement: [
-              ...flohmaerkte.regular.map((flohmarkt, index) => ({
+              ...flohmaerkte.map((flohmarkt, index) => ({
                 "@type": "ListItem",
                 position: index + 1,
                 item: {
@@ -47,25 +46,6 @@ export default function FlohmarktFlensburg() {
                     opens: termin.zeiten.split("–")[0].trim(),
                     closes: termin.zeiten.split("–")[1].trim(),
                   })),
-                },
-              })),
-              ...flohmaerkte.special.map((termin, index) => ({
-                "@type": "ListItem",
-                position: flohmaerkte.regular.length + index + 1,
-                item: {
-                  "@type": "Event",
-                  name: `${termin.thema} Flohmarkt`,
-                  description: `Besonderer Flohmarkt-Termin in Flensburg`,
-                  startDate: termin.datum,
-                  location: {
-                    "@type": "Place",
-                    name: termin.ort,
-                    address: {
-                      "@type": "PostalAddress",
-                      addressLocality: "Flensburg",
-                      addressCountry: "DE",
-                    },
-                  },
                 },
               })),
             ],

@@ -1,46 +1,51 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import FlohmarktCard from "./FlohmarktCard";
-import SpecialTerminCard from "./SpecialTerminCard";
-import type { FlohmaerkteData } from "@/lib/types";
-import { TAB_VALUES } from "@/lib/constants";
+import { Flohmarkt } from "@/lib/types";
 
 interface FlohmarktTabsProps {
-  flohmaerkte: FlohmaerkteData;
+  flohmaerkte: Flohmarkt[];
 }
 
 export default function FlohmarktTabs({ flohmaerkte }: FlohmarktTabsProps) {
   return (
-    <Tabs defaultValue={TAB_VALUES.REGULAR} className="w-full">
-      <TabsList className="mx-auto bg-white border-2 border-primary mb-8">
+    <Tabs defaultValue="Alle" className="w-full">
+      <TabsList className="mx-auto bg-white border-2 border-primary mb-8 h-12">
         <TabsTrigger
-          value={TAB_VALUES.REGULAR}
-          className="font-semibold data-[state=active]:text-white data-[state=active]:bg-primary"
+          value="Alle"
+          className="font-semibold data-[state=active]:text-white data-[state=active]:bg-primary cursor-pointer"
         >
-          Regelmäßige Flohmärkte
+          Alle
         </TabsTrigger>
-        <TabsTrigger
-          value={TAB_VALUES.SPECIAL}
-          className="font-semibold data-[state=active]:text-white data-[state=active]:bg-primary"
-        >
-          Besondere Termine
-        </TabsTrigger>
+        {flohmaerkte.map((flohmarkt) => (
+          <TabsTrigger
+            key={flohmarkt.name}
+            value={flohmarkt.name}
+            className="font-semibold data-[state=active]:text-white data-[state=active]:bg-primary cursor-pointer"
+          >
+            {flohmarkt.name}
+          </TabsTrigger>
+        ))}
       </TabsList>
 
-      <TabsContent value={TAB_VALUES.REGULAR} className="space-y-6">
+      <TabsContent value="Alle" className="space-y-6">
         <div className="grid gap-6 grid-cols-1">
-          {flohmaerkte.regular.map((flohmarkt, index) => (
-            <FlohmarktCard key={index} flohmarkt={flohmarkt} />
+          {flohmaerkte.map((flohmarkt) => (
+            <FlohmarktCard key={flohmarkt.name} flohmarkt={flohmarkt} />
           ))}
         </div>
       </TabsContent>
 
-      <TabsContent value={TAB_VALUES.SPECIAL} className="space-y-6">
-        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-          {flohmaerkte.special.map((termin, index) => (
-            <SpecialTerminCard key={index} termin={termin} />
-          ))}
-        </div>
-      </TabsContent>
+      {flohmaerkte.map((flohmarkt) => (
+        <TabsContent
+          key={flohmarkt.name}
+          value={flohmarkt.name}
+          className="space-y-6"
+        >
+          <div className="grid gap-6 grid-cols-1">
+            <FlohmarktCard flohmarkt={flohmarkt} />
+          </div>
+        </TabsContent>
+      ))}
     </Tabs>
   );
 }

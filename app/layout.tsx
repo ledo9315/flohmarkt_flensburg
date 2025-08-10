@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description:
     "Alle Flohmärkte in Flensburg 2025: Citti-Park, Südermarkt, Förde-Park, EXE, Holtex. Termine, Adressen und Öffnungszeiten. Kostenlos und aktuell.",
   keywords:
-    "Flohmarkt Flensburg, Flohmärkte Flensburg, Flohmarkt Termine Flensburg, Citti-Park Flohmarkt, Südermarkt Flensburg, Förde-Park Flohmarkt, EXE Flohmarkt, Holtex Flohmarkt, Flohmarkt 2025 Flensburg",
+    "Flohmarkt Flensburg, Flohmärkte Flensburg, Flohmarkt Termine Flensburg, Citti-Park Flohmarkt, Südermarkt Flensburg, Förde-Park Flohmarkt, EXE Flohmarkt, Holtex Flohmarkt, Flohmarkt 2025 Flensburg, Flohmarkt Flensburg heute, Flohmarkt Flensburg morgen",
   authors: [{ name: "Leonid Domahalskyy" }],
   creator: "Leonid Domahalskyy",
   publisher: "Flohmarkt Flensburg",
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
     type: "website",
     images: [
       {
-        url: "/og-image.jpg",
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "Flohmarkt Flensburg - Alle Termine 2025",
@@ -58,9 +58,6 @@ export const metadata: Metadata = {
       "max-snippet": -1,
     },
   },
-  // verification: {
-  //   google: "your-google-verification-code",
-  // },
 };
 
 export default function RootLayout({

@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { Termin, NextTerminInfo, Flohmarkt, SpecialTermin } from "./types";
+import type { Termin, NextTerminInfo, Flohmarkt } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -61,10 +61,7 @@ export function sortTermineByDate<T extends { datum: string }>(
 /**
  * Sammelt alle Termine aus regulären und speziellen Flohmärkten
  */
-export function getAllTermine(
-  regular: Flohmarkt[],
-  special: SpecialTermin[]
-): NextTerminInfo[] {
+export function getAllTermine(regular: Flohmarkt[]): NextTerminInfo[] {
   const allTermine: NextTerminInfo[] = [];
 
   // Reguläre Flohmärkte
@@ -79,16 +76,6 @@ export function getAllTermine(
     });
   });
 
-  // Spezielle Termine
-  special.forEach((termin) => {
-    allTermine.push({
-      datum: termin.datum,
-      wochentag: termin.wochentag,
-      zeiten: termin.zeiten,
-      standort: termin.thema,
-    });
-  });
-
   return allTermine;
 }
 
@@ -96,10 +83,9 @@ export function getAllTermine(
  * Findet den nächsten Gesamttermin aus allen Flohmärkten
  */
 export function getNextOverallTermin(
-  regular: Flohmarkt[],
-  special: SpecialTermin[]
+  regular: Flohmarkt[]
 ): NextTerminInfo | null {
-  const allTermine = getAllTermine(regular, special);
+  const allTermine = getAllTermine(regular);
   const sortedTermine = sortTermineByDate(allTermine);
   return sortedTermine[0] || null;
 }

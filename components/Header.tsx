@@ -22,9 +22,6 @@ export default function Header() {
           <p className="text-xl text-blue-100 drop-shadow-md">
             Alle Termine & Adressen 2025
           </p>
-          <p className="text-blue-200 mt-2 drop-shadow-md">
-            Kostenlos • Aktuell • Übersichtlich
-          </p>
         </div>
       </div>
     </header>
