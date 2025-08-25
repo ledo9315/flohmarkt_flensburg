@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/private/",
     },
-    sitemap: "https://flohmarkt-flensburg.de/sitemap.xml",
+    sitemap: "https://flensburg-flohmarkt.de/sitemap.xml",
   };
 }
