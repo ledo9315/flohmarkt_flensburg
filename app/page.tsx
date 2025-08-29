@@ -18,57 +18,15 @@ export default function FlohmarktFlensburg() {
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "ItemList",
+            "@type": "WebPage",
             name: "Flohmärkte in Flensburg 2025",
             description: "Alle Flohmarkt-Termine in Flensburg für 2025",
-            numberOfItems: flohmaerkte.length,
-            itemListElement: [
-              ...flohmaerkte.flatMap((flohmarkt) =>
-                flohmarkt.termine.map((termin, index) => ({
-                  "@type": "ListItem",
-                  position: index + 1,
-                  item: {
-                    "@type": "Event",
-                    name: `${flohmarkt.name} Flohmarkt`,
-                    description: flohmarkt.description,
-                    startDate: `2025-${termin.datum
-                      .split(".")
-                      .reverse()
-                      .join("-")}T${termin.zeiten
-                      .split("–")[0]
-                      .trim()
-                      .replace(" Uhr", "")}:00`,
-                    endDate: `2025-${termin.datum
-                      .split(".")
-                      .reverse()
-                      .join("-")}T${termin.zeiten
-                      .split("–")[1]
-                      .trim()
-                      .replace(" Uhr", "")}:00`,
-                    location: {
-                      "@type": "Place",
-                      name: flohmarkt.name,
-                      address: {
-                        "@type": "PostalAddress",
-                        streetAddress: flohmarkt.address,
-                        addressLocality: "Flensburg",
-                        addressCountry: "DE",
-                      },
-                      geo: {
-                        "@type": "GeoCoordinates",
-                        latitude: "54.7837",
-                        longitude: "9.4360",
-                      },
-                    },
-                    organizer: {
-                      "@type": "Organization",
-                      name: "Flohmarkt Flensburg",
-                      url: "https://flensburg-flohmarkt.de",
-                    },
-                  },
-                }))
-              ),
-            ],
+            url: "https://flensburg-flohmarkt.de",
+            about: {
+              "@type": "Place",
+              name: "Flensburg",
+              addressCountry: "DE",
+            },
           }),
         }}
       />
