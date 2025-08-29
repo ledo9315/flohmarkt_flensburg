@@ -13,24 +13,6 @@ export default function FlohmarktFlensburg() {
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebPage",
-            name: "Flohmärkte in Flensburg 2025",
-            description: "Alle Flohmarkt-Termine in Flensburg für 2025",
-            url: "https://flensburg-flohmarkt.de",
-            about: {
-              "@type": "Place",
-              name: "Flensburg",
-              addressCountry: "DE",
-            },
-          }),
-        }}
-      />
-
       <div className="min-h-screen bg-secondary">
         <Header />
 
