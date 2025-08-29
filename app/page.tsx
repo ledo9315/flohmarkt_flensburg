@@ -23,31 +23,51 @@ export default function FlohmarktFlensburg() {
             description: "Alle Flohmarkt-Termine in Flensburg für 2025",
             numberOfItems: flohmaerkte.length,
             itemListElement: [
-              ...flohmaerkte.map((flohmarkt, index) => ({
-                "@type": "ListItem",
-                position: index + 1,
-                item: {
-                  "@type": "LocalBusiness",
-                  name: `${flohmarkt.name} Flohmarkt`,
-                  description: flohmarkt.description,
-                  address: {
-                    "@type": "PostalAddress",
-                    addressLocality: "Flensburg",
-                    addressCountry: "DE",
+              ...flohmaerkte.flatMap((flohmarkt) =>
+                flohmarkt.termine.map((termin, index) => ({
+                  "@type": "ListItem",
+                  position: index + 1,
+                  item: {
+                    "@type": "Event",
+                    name: `${flohmarkt.name} Flohmarkt`,
+                    description: flohmarkt.description,
+                    startDate: `2025-${termin.datum
+                      .split(".")
+                      .reverse()
+                      .join("-")}T${termin.zeiten
+                      .split("–")[0]
+                      .trim()
+                      .replace(" Uhr", "")}:00`,
+                    endDate: `2025-${termin.datum
+                      .split(".")
+                      .reverse()
+                      .join("-")}T${termin.zeiten
+                      .split("–")[1]
+                      .trim()
+                      .replace(" Uhr", "")}:00`,
+                    location: {
+                      "@type": "Place",
+                      name: flohmarkt.name,
+                      address: {
+                        "@type": "PostalAddress",
+                        streetAddress: flohmarkt.address,
+                        addressLocality: "Flensburg",
+                        addressCountry: "DE",
+                      },
+                      geo: {
+                        "@type": "GeoCoordinates",
+                        latitude: "54.7837",
+                        longitude: "9.4360",
+                      },
+                    },
+                    organizer: {
+                      "@type": "Organization",
+                      name: "Flohmarkt Flensburg",
+                      url: "https://flensburg-flohmarkt.de",
+                    },
                   },
-                  geo: {
-                    "@type": "GeoCoordinates",
-                    latitude: "54.7837",
-                    longitude: "9.4360",
-                  },
-                  openingHours: flohmarkt.termine.map((termin) => ({
-                    "@type": "OpeningHoursSpecification",
-                    dayOfWeek: termin.wochentag,
-                    opens: termin.zeiten.split("–")[0].trim(),
-                    closes: termin.zeiten.split("–")[1].trim(),
-                  })),
-                },
-              })),
+                }))
+              ),
             ],
           }),
         }}
