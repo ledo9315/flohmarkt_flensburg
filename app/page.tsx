@@ -7,12 +7,14 @@ import Footer from "@/components/Footer";
 import InfoSection from "@/components/InfoSection";
 import NextTerminBanner from "@/components/NextTerminBanner";
 import FlohmarktTabs from "@/components/FlohmarktTabs";
+import StructuredData from "@/components/StructuredData";
 
 export default function FlohmarktFlensburg() {
   const naechsterGesamtTermin = useNextOverallTermin(flohmaerkte);
 
   return (
     <>
+      <StructuredData />
       <div className="min-h-screen bg-secondary">
         <Header />
 

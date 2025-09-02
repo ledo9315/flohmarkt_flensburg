@@ -89,7 +89,10 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                     dateTime={`2025-${termin.datum
                       .split(".")
                       .reverse()
-                      .join("-")}`}
+                      .join("-")}T${termin.zeiten
+                      .split(" – ")[0]
+                      .replace(/[^0-9:]/g, "")
+                      .padStart(5, "0")}:00+01:00`}
                     className={`font-medium ${isPast ? "text-gray-400" : ""}`}
                   >
                     {termin.datum}
@@ -100,11 +103,74 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                   <div className={`text-xs ${isPast ? "text-gray-400" : ""}`}>
                     {termin.zeiten}
                   </div>
+
+                  {/* Strukturierte Daten für Google */}
                   <meta
                     itemProp="name"
                     content={`${flohmarkt.name} Flohmarkt`}
                   />
-                  <meta itemProp="location" content={flohmarkt.address} />
+                  <meta
+                    itemProp="description"
+                    content={`${flohmarkt.description} am ${termin.datum}`}
+                  />
+                  <meta
+                    itemProp="endDate"
+                    content={`2025-${termin.datum
+                      .split(".")
+                      .reverse()
+                      .join("-")}T${(
+                      termin.zeiten.split(" – ")[1]?.replace(/[^0-9:]/g, "") ||
+                      "16:00"
+                    ).padStart(5, "0")}:00+01:00`}
+                  />
+                  <meta
+                    itemProp="eventStatus"
+                    content="https://schema.org/EventScheduled"
+                  />
+                  <meta
+                    itemProp="eventAttendanceMode"
+                    content="https://schema.org/OfflineEventAttendanceMode"
+                  />
+
+                  {/* Ort-Informationen */}
+                  <div
+                    itemProp="location"
+                    itemScope
+                    itemType="https://schema.org/Place"
+                  >
+                    <meta itemProp="name" content={flohmarkt.name} />
+                    <div
+                      itemProp="address"
+                      itemScope
+                      itemType="https://schema.org/PostalAddress"
+                    >
+                      <meta
+                        itemProp="streetAddress"
+                        content={flohmarkt.address.split(",")[0]}
+                      />
+                      <meta itemProp="addressLocality" content="Flensburg" />
+                      <meta
+                        itemProp="postalCode"
+                        content={
+                          flohmarkt.address.match(/\d{5}/)?.[0] || "24941"
+                        }
+                      />
+                      <meta itemProp="addressCountry" content="DE" />
+                    </div>
+                  </div>
+
+                  {/* Veranstalter */}
+                  <div
+                    itemProp="organizer"
+                    itemScope
+                    itemType="https://schema.org/Organization"
+                  >
+                    <meta itemProp="name" content="Flohmarkt Flensburg" />
+                    <meta
+                      itemProp="url"
+                      content="https://flensburg-flohmarkt.de"
+                    />
+                  </div>
                 </article>
               );
             })}
