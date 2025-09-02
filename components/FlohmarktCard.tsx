@@ -141,6 +141,12 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                     content="https://schema.org/OfflineEventAttendanceMode"
                   />
 
+                  {/* Bild */}
+                  <meta
+                    itemProp="image"
+                    content="https://flensburg-flohmarkt.de/header-img.jpg"
+                  />
+
                   {/* Ort-Informationen */}
                   <div
                     itemProp="location"
@@ -165,6 +171,10 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                         }
                       />
                       <meta itemProp="addressCountry" content="DE" />
+                      <meta
+                        itemProp="addressRegion"
+                        content="Schleswig-Holstein"
+                      />
                     </div>
                   </div>
 
@@ -174,10 +184,46 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                     itemScope
                     itemType="https://schema.org/Organization"
                   >
-                    <meta itemProp="name" content="Flohmarkt Flensburg" />
+                    <meta
+                      itemProp="name"
+                      content={`${flohmarkt.name} Veranstaltungsmanagement`}
+                    />
                     <meta
                       itemProp="url"
-                      content="https://flensburg-flohmarkt.de"
+                      content={
+                        flohmarkt.name === "Citti-Park"
+                          ? "https://www.citti-park.de"
+                          : flohmarkt.name === "Förde Park"
+                          ? "https://www.foerde-park.de"
+                          : "https://flensburg-flohmarkt.de"
+                      }
+                    />
+                  </div>
+
+                  {/* Angebote */}
+                  <div
+                    itemProp="offers"
+                    itemScope
+                    itemType="https://schema.org/Offer"
+                  >
+                    <meta itemProp="price" content="0" />
+                    <meta itemProp="priceCurrency" content="EUR" />
+                    <meta
+                      itemProp="availability"
+                      content="https://schema.org/InStock"
+                    />
+                    <meta itemProp="name" content="Kostenloser Eintritt" />
+                  </div>
+
+                  {/* Performer */}
+                  <div
+                    itemProp="performer"
+                    itemScope
+                    itemType="https://schema.org/Organization"
+                  >
+                    <meta
+                      itemProp="name"
+                      content="Verschiedene Aussteller und Verkäufer"
                     />
                   </div>
                 </article>

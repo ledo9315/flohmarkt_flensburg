@@ -42,6 +42,7 @@ export default function StructuredData() {
           name: `${flohmarkt.name} Flohmarkt am ${termin.datum}`,
           description: `${flohmarkt.description} - ${termin.wochentag}, ${termin.datum} von ${termin.zeiten}`,
           url: `https://flensburg-flohmarkt.de/#${eventId}`,
+          image: "https://flensburg-flohmarkt.de/header-img.jpg",
           startDate: `${isoDate}T${startTime
             .padStart(4, "0")
             .slice(0, 2)}:${startTime.padStart(4, "0").slice(2, 4)}:00+01:00`,
@@ -54,6 +55,9 @@ export default function StructuredData() {
           eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
           location: {
             "@type": "Place",
+            "@id": `https://flensburg-flohmarkt.de/#place-${flohmarkt.name
+              .toLowerCase()
+              .replace(/[^a-z0-9]/g, "-")}`,
             name: flohmarkt.name,
             address: {
               "@type": "PostalAddress",
@@ -63,10 +67,28 @@ export default function StructuredData() {
               addressRegion: "Schleswig-Holstein",
               addressCountry: "DE",
             },
+            geo:
+              flohmarkt.name === "Citti-Park"
+                ? {
+                    "@type": "GeoCoordinates",
+                    latitude: "54.7837",
+                    longitude: "9.4360",
+                  }
+                : undefined,
+          },
+          performer: {
+            "@type": "Organization",
+            name: "Verschiedene Aussteller und Verkäufer",
           },
           organizer: {
             "@type": "Organization",
-            name: flohmarkt.name,
+            name: `${flohmarkt.name} Veranstaltungsmanagement`,
+            url:
+              flohmarkt.name === "Citti-Park"
+                ? "https://www.citti-park.de"
+                : flohmarkt.name === "Förde Park"
+                ? "https://www.foerde-park.de"
+                : "https://flensburg-flohmarkt.de",
             address: {
               "@type": "PostalAddress",
               streetAddress: streetAddress,
@@ -78,10 +100,13 @@ export default function StructuredData() {
           },
           offers: {
             "@type": "Offer",
-            availability: "https://schema.org/InStock",
+            name: "Kostenloser Eintritt",
             price: "0",
             priceCurrency: "EUR",
-            validFrom: "2025-01-01",
+            availability: "https://schema.org/InStock",
+            validFrom: `${isoDate}T06:00:00+01:00`,
+            validThrough: `${isoDate}T23:59:00+01:00`,
+            url: `https://flensburg-flohmarkt.de/#${eventId}`,
           },
         };
       })
