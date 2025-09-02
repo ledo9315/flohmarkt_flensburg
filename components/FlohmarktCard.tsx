@@ -88,8 +88,14 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                     itemProp="startDate"
                     dateTime={(() => {
                       const [day, month, year] = termin.datum.split(".");
-                      const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-                      const startTimeStr = termin.zeiten.split(" – ")[0].replace(/\s*Uhr\s*/, "").trim();
+                      const isoDate = `${year}-${month.padStart(
+                        2,
+                        "0"
+                      )}-${day.padStart(2, "0")}`;
+                      const startTimeStr = termin.zeiten
+                        .split(" – ")[0]
+                        .replace(/\s*Uhr\s*/, "")
+                        .trim();
                       const formatTime = (time: string) => {
                         if (time.includes(":")) {
                           return time.padStart(5, "0");
@@ -133,8 +139,15 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                     itemProp="endDate"
                     content={(() => {
                       const [day, month, year] = termin.datum.split(".");
-                      const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
-                      const endTimeStr = termin.zeiten.split(" – ")[1]?.replace(/\s*Uhr\s*/, "").trim() || "16:00";
+                      const isoDate = `${year}-${month.padStart(
+                        2,
+                        "0"
+                      )}-${day.padStart(2, "0")}`;
+                      const endTimeStr =
+                        termin.zeiten
+                          .split(" – ")[1]
+                          ?.replace(/\s*Uhr\s*/, "")
+                          .trim() || "16:00";
                       const formatTime = (time: string) => {
                         if (time.includes(":")) {
                           return time.padStart(5, "0");

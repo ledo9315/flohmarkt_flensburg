@@ -18,13 +18,17 @@ export default function StructuredData() {
       .map((termin) => {
         // Datum in ISO Format konvertieren
         const [day, month, year] = termin.datum.split(".");
-        const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+        const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+          2,
+          "0"
+        )}`;
 
         // Start- und Endzeit korrekt extrahieren und formatieren
         const timeRange = termin.zeiten.split(" – ");
         const startTimeStr = timeRange[0].replace(/\s*Uhr\s*/, "").trim();
-        const endTimeStr = timeRange[1]?.replace(/\s*Uhr\s*/, "").trim() || "16:00";
-        
+        const endTimeStr =
+          timeRange[1]?.replace(/\s*Uhr\s*/, "").trim() || "16:00";
+
         // Zeit in HH:MM Format sicherstellen
         const formatTime = (time: string) => {
           if (time.includes(":")) {
@@ -34,7 +38,7 @@ export default function StructuredData() {
             return `${time.padStart(2, "0")}:00`;
           }
         };
-        
+
         const startTime = formatTime(startTimeStr);
         const endTime = formatTime(endTimeStr);
 
