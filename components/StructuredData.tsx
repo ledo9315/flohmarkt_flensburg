@@ -3,72 +3,88 @@
 import { flohmaerkte } from "@/data/flohmaerkte";
 
 export default function StructuredData() {
-  // Alle Events in strukturierte Daten umwandeln
+  // Nur zukünftige Events in strukturierte Daten umwandeln
+  const today = new Date();
+  const currentYear = today.getFullYear();
+
   const events = flohmaerkte.flatMap((flohmarkt) =>
-    flohmarkt.termine.map((termin) => {
-      // Start- und Endzeit extrahieren
-      const [startTime, endTime] = termin.zeiten
-        .split(" – ")
-        .map((time) => time.replace(/\s*Uhr\s*/, "").replace(":", ""));
+    flohmarkt.termine
+      .filter((termin) => {
+        // Nur zukünftige Termine einschließen
+        const [day, month] = termin.datum.split(".").map(Number);
+        const eventDate = new Date(currentYear, month - 1, day);
+        return eventDate >= today;
+      })
+      .map((termin) => {
+        // Start- und Endzeit extrahieren
+        const [startTime, endTime] = termin.zeiten
+          .split(" – ")
+          .map((time) => time.replace(/\s*Uhr\s*/, "").replace(":", ""));
 
-      // Datum in ISO Format konvertieren
-      const [day, month, year] = termin.datum.split(".");
-      const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
-        2,
-        "0"
-      )}`;
+        // Datum in ISO Format konvertieren
+        const [day, month, year] = termin.datum.split(".");
+        const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
+          2,
+          "0"
+        )}`;
 
-      // Postleitzahl aus Adresse extrahieren
-      const postalCode = flohmarkt.address.match(/\d{5}/)?.[0] || "24941";
-      const streetAddress = flohmarkt.address.split(",")[0].trim();
+        // Postleitzahl aus Adresse extrahieren
+        const postalCode = flohmarkt.address.match(/\d{5}/)?.[0] || "24941";
+        const streetAddress = flohmarkt.address.split(",")[0].trim();
 
-      return {
-        "@type": "Event",
-        name: `${flohmarkt.name} Flohmarkt`,
-        description: `${flohmarkt.description} am ${termin.datum}`,
-        startDate: `${isoDate}T${startTime
-          .padStart(4, "0")
-          .slice(0, 2)}:${startTime.padStart(4, "0").slice(2, 4)}:00+01:00`,
-        endDate: `${isoDate}T${(endTime || "1600")
-          .padStart(4, "0")
-          .slice(0, 2)}:${(endTime || "1600")
-          .padStart(4, "0")
-          .slice(2, 4)}:00+01:00`,
-        eventStatus: "https://schema.org/EventScheduled",
-        eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
-        location: {
-          "@type": "Place",
-          name: flohmarkt.name,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: streetAddress,
-            addressLocality: "Flensburg",
-            postalCode: postalCode,
-            addressRegion: "Schleswig-Holstein",
-            addressCountry: "DE",
+        const eventId = `${flohmarkt.name
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "-")}-${termin.datum.replace(/\./g, "-")}`;
+
+        return {
+          "@type": "Event",
+          "@id": `https://flensburg-flohmarkt.de/#event-${eventId}`,
+          name: `${flohmarkt.name} Flohmarkt am ${termin.datum}`,
+          description: `${flohmarkt.description} - ${termin.wochentag}, ${termin.datum} von ${termin.zeiten}`,
+          url: `https://flensburg-flohmarkt.de/#${eventId}`,
+          startDate: `${isoDate}T${startTime
+            .padStart(4, "0")
+            .slice(0, 2)}:${startTime.padStart(4, "0").slice(2, 4)}:00+01:00`,
+          endDate: `${isoDate}T${(endTime || "1600")
+            .padStart(4, "0")
+            .slice(0, 2)}:${(endTime || "1600")
+            .padStart(4, "0")
+            .slice(2, 4)}:00+01:00`,
+          eventStatus: "https://schema.org/EventScheduled",
+          eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+          location: {
+            "@type": "Place",
+            name: flohmarkt.name,
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: streetAddress,
+              addressLocality: "Flensburg",
+              postalCode: postalCode,
+              addressRegion: "Schleswig-Holstein",
+              addressCountry: "DE",
+            },
           },
-        },
-        organizer: {
-          "@type": "Organization",
-          name: flohmarkt.name,
-          address: {
-            "@type": "PostalAddress",
-            streetAddress: streetAddress,
-            addressLocality: "Flensburg",
-            postalCode: postalCode,
-            addressRegion: "Schleswig-Holstein",
-            addressCountry: "DE",
+          organizer: {
+            "@type": "Organization",
+            name: flohmarkt.name,
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: streetAddress,
+              addressLocality: "Flensburg",
+              postalCode: postalCode,
+              addressRegion: "Schleswig-Holstein",
+              addressCountry: "DE",
+            },
           },
-        },
-        offers: {
-          "@type": "Offer",
-          availability: "https://schema.org/InStock",
-          price: "0",
-          priceCurrency: "EUR",
-          validFrom: "2025-01-01",
-        },
-      };
-    })
+          offers: {
+            "@type": "Offer",
+            availability: "https://schema.org/InStock",
+            price: "0",
+            priceCurrency: "EUR",
+            validFrom: "2025-01-01",
+          },
+        };
+      })
   );
 
   const structuredData = {

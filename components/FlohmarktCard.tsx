@@ -107,11 +107,20 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                   {/* Strukturierte Daten für Google */}
                   <meta
                     itemProp="name"
-                    content={`${flohmarkt.name} Flohmarkt`}
+                    content={`${flohmarkt.name} Flohmarkt am ${termin.datum}`}
                   />
                   <meta
                     itemProp="description"
-                    content={`${flohmarkt.description} am ${termin.datum}`}
+                    content={`${flohmarkt.description} - ${termin.wochentag}, ${termin.datum} von ${termin.zeiten}`}
+                  />
+                  <meta
+                    itemProp="url"
+                    content={`https://flensburg-flohmarkt.de/#${flohmarkt.name
+                      .toLowerCase()
+                      .replace(/[^a-z0-9]/g, "-")}-${termin.datum.replace(
+                      /\./g,
+                      "-"
+                    )}`}
                   />
                   <meta
                     itemProp="endDate"
