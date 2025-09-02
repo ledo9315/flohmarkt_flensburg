@@ -16,17 +16,27 @@ export default function StructuredData() {
         return eventDate >= today;
       })
       .map((termin) => {
-        // Start- und Endzeit extrahieren
-        const [startTime, endTime] = termin.zeiten
-          .split(" – ")
-          .map((time) => time.replace(/\s*Uhr\s*/, "").replace(":", ""));
-
         // Datum in ISO Format konvertieren
         const [day, month, year] = termin.datum.split(".");
-        const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(
-          2,
-          "0"
-        )}`;
+        const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+
+        // Start- und Endzeit korrekt extrahieren und formatieren
+        const timeRange = termin.zeiten.split(" – ");
+        const startTimeStr = timeRange[0].replace(/\s*Uhr\s*/, "").trim();
+        const endTimeStr = timeRange[1]?.replace(/\s*Uhr\s*/, "").trim() || "16:00";
+        
+        // Zeit in HH:MM Format sicherstellen
+        const formatTime = (time: string) => {
+          if (time.includes(":")) {
+            return time.padStart(5, "0"); // "8:30" -> "08:30"
+          } else {
+            // Falls nur Stunden: "8" -> "08:00"
+            return `${time.padStart(2, "0")}:00`;
+          }
+        };
+        
+        const startTime = formatTime(startTimeStr);
+        const endTime = formatTime(endTimeStr);
 
         // Postleitzahl aus Adresse extrahieren
         const postalCode = flohmarkt.address.match(/\d{5}/)?.[0] || "24941";
@@ -43,14 +53,8 @@ export default function StructuredData() {
           description: `${flohmarkt.description} - ${termin.wochentag}, ${termin.datum} von ${termin.zeiten}`,
           url: `https://flensburg-flohmarkt.de/#${eventId}`,
           image: "https://flensburg-flohmarkt.de/header-img.jpg",
-          startDate: `${isoDate}T${startTime
-            .padStart(4, "0")
-            .slice(0, 2)}:${startTime.padStart(4, "0").slice(2, 4)}:00+01:00`,
-          endDate: `${isoDate}T${(endTime || "1600")
-            .padStart(4, "0")
-            .slice(0, 2)}:${(endTime || "1600")
-            .padStart(4, "0")
-            .slice(2, 4)}:00+01:00`,
+          startDate: `${isoDate}T${startTime}:00+01:00`,
+          endDate: `${isoDate}T${endTime}:00+01:00`,
           eventStatus: "https://schema.org/EventScheduled",
           eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
           location: {

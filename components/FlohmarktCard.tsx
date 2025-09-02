@@ -86,13 +86,20 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                 >
                   <time
                     itemProp="startDate"
-                    dateTime={`2025-${termin.datum
-                      .split(".")
-                      .reverse()
-                      .join("-")}T${termin.zeiten
-                      .split(" – ")[0]
-                      .replace(/[^0-9:]/g, "")
-                      .padStart(5, "0")}:00+01:00`}
+                    dateTime={(() => {
+                      const [day, month, year] = termin.datum.split(".");
+                      const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+                      const startTimeStr = termin.zeiten.split(" – ")[0].replace(/\s*Uhr\s*/, "").trim();
+                      const formatTime = (time: string) => {
+                        if (time.includes(":")) {
+                          return time.padStart(5, "0");
+                        } else {
+                          return `${time.padStart(2, "0")}:00`;
+                        }
+                      };
+                      const startTime = formatTime(startTimeStr);
+                      return `${isoDate}T${startTime}:00+01:00`;
+                    })()}
                     className={`font-medium ${isPast ? "text-gray-400" : ""}`}
                   >
                     {termin.datum}
@@ -124,13 +131,20 @@ export default function FlohmarktCard({ flohmarkt }: FlohmarktCardProps) {
                   />
                   <meta
                     itemProp="endDate"
-                    content={`2025-${termin.datum
-                      .split(".")
-                      .reverse()
-                      .join("-")}T${(
-                      termin.zeiten.split(" – ")[1]?.replace(/[^0-9:]/g, "") ||
-                      "16:00"
-                    ).padStart(5, "0")}:00+01:00`}
+                    content={(() => {
+                      const [day, month, year] = termin.datum.split(".");
+                      const isoDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+                      const endTimeStr = termin.zeiten.split(" – ")[1]?.replace(/\s*Uhr\s*/, "").trim() || "16:00";
+                      const formatTime = (time: string) => {
+                        if (time.includes(":")) {
+                          return time.padStart(5, "0");
+                        } else {
+                          return `${time.padStart(2, "0")}:00`;
+                        }
+                      };
+                      const endTime = formatTime(endTimeStr);
+                      return `${isoDate}T${endTime}:00+01:00`;
+                    })()}
                   />
                   <meta
                     itemProp="eventStatus"
