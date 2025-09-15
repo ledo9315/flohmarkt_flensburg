@@ -131,7 +131,7 @@ export const flohmaerkte: Flohmarkt[] = [
       },
       {
         datum: "02.10.2025",
-        wochentag: "Freitag",
+        wochentag: "Donnerstag",
         zeiten: "09:00 – 17:00 Uhr",
       },
       {
