@@ -16,6 +16,21 @@ const nextConfig: NextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
+  async redirects() {
+    return [
+      {
+        source: "/:path*",
+        has: [
+          {
+            type: "host",
+            value: "www.flensburg-flohmarkt.de",
+          },
+        ],
+        destination: "https://flensburg-flohmarkt.de/:path*",
+        permanent: true,
+      },
+    ];
+  },
   async headers() {
     return [
       {
